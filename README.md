@@ -54,7 +54,7 @@ https://zhuanlan.zhihu.com/p/267836740
 
 使用lsb_codename -a 可以查询版本，来选择需要种源
 
-[树莓派系统常用中文镜像源](mirrors.tuna.tsinghua.edu.cn)
+[树莓派系统常用中文镜像源](http://mirrors.tuna.tsinghua.edu.cn)
 
 #### 2、树莓派镜像源列表
 
