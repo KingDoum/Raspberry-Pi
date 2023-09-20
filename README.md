@@ -33,6 +33,9 @@ GPIO编号：[树莓派GPIO引脚对照表](https://shumeipai.nxez.com/raspberry
 树莓派需要烧录一个系统，这样才可以运作，具体教程参考
 https://zhuanlan.zhihu.com/p/594475040
 
+**建议直接装64位版本，用起来性能会稍微好点；
+Python 也别装包了，直接上mimnconda 方便管理**
+
 里面有软件烧录和wifi配置。启动后，可以直接连上家里的wifi。在路由器上找到
 这个IP地址，然后直接ssh连接配置即可。
 
@@ -48,16 +51,19 @@ Step1：
 
 Step2：
 
-
 如果是后面对公网要求流量大，可以试试这个
 4MB带宽，优惠后，一年25块钱；
 
+
 [DDNSTO内网穿透](https://www.ddnsto.com/)
+
 
 ## Pycharm 远程部署 代码
 
 建议按照这上面的行为进行连接电脑
 https://zhuanlan.zhihu.com/p/267836740
+
+设置几个软件
 
 ## 五、树莓派软件源 & 镜像源
 
