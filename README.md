@@ -69,8 +69,19 @@ https://zhuanlan.zhihu.com/p/267836740
 
 ## 五、树莓派软件源 & 镜像源
 
+另外更新软件的时候，要选择架构对应的源
+http://btharp.com/article/2022/6/24/107.html
+
+### 软件源更新
+
+可以参考此文档:[参考文档](https://zhuanlan.zhihu.com/p/98079246)
+
+
 #### 1、国内常用软件源
 
+
+sudo gpg --keyserver keyserver.ubuntu.com --recv-keys 9165938D90FDDD2E
+gpg --export --armor 9165938D90FDDD2E | sudo apt-key add -
 使用lsb_codename -a 可以查询版本，来选择需要种源
 
 [树莓派系统常用中文镜像源](http://mirrors.tuna.tsinghua.edu.cn)
