@@ -149,6 +149,8 @@ http://btharp.com/article/2022/6/24/107.html
 23.10.4 更新，南京联通这边据说 改成桥接模式后，如果不断电，据说 公网IP会 固定成一个地址，不会改变。
 搬家的时候，可以顺便一起改成桥接模式，利用路由器进行拨号上网
 
+10.18号更新： 已经改成桥接+公网，很舒服，已经连续6天IP地址没有换了，很舒服
+
 ）
 
 这个域名，主要是为了 把动态的公网地址，
@@ -166,6 +168,7 @@ http://btharp.com/article/2022/6/24/107.html
 
 1. [Pi Dashboard (Pi 仪表盘)](https://make.quwj.com/project/10) --- > 目前已经被弃用，直接远程连接后，使用htop 即可显示树莓派当前状态
 2. 在树莓派闲置的时候，上传PCDN 利用网心云赚点钱 [具体链接](https://help.onethingcloud.com/7cb4/3ed5/39ae) (PS：如果链接挂了，可以直接点击此 跳转到[首页](https://help.onethingcloud.com/7cb4/3ed5)，待补充) 
+（这个PCDN，暂时废弃, 据说现在是不让上传PCDN 会被警告。
 
 ### Pycharm 远程部署
 
@@ -620,5 +623,7 @@ cd
 
  > 查询树莓派 当前公网ip地址 ：curl http://members.3322.org/dyndns/getip ，返回的就是公网ip
  > 112.86.163.40
+
+
 
 
