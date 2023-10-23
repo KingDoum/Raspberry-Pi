@@ -567,6 +567,9 @@ Etcher下载地址：https://www.balena.io/etcher/
 参考链接：
 [CSDN参考链接](https://blog.csdn.net/m0_50679156/article/details/115431062)
 
+## 备份之前提示
+1. 需要把docker容器停止后，进行备份
+2. 如果挂载硬盘，需要把硬盘取消挂载，或者挂载到 /media路径下（这个路径下，脚本不会自动备份）
 
 
 # 一些小疑问
@@ -622,7 +625,7 @@ cd
 使用~可以让路径写得更简洁,不用每次输入完整的/home/用户名。
 
  > 查询树莓派 当前公网ip地址 ：curl http://members.3322.org/dyndns/getip ，返回的就是公网ip
- > 112.86.163.40
+ > XX.XX.XX.XX
 
 
 
