@@ -112,9 +112,10 @@ volumes:
 ```
 这个示例中定义了一个将本地 "./data" 目录挂载到容器的 "/app/data" 目录的卷。
 这个./data 就是代表 同 docker-compose.yml文件位置下的data文件夹，映射到 容器的/app/date 路径下
+（容器中，实际上会生成一个完整的路径结构，使用/app 就是容器的**根目录中的/app**。 
+而 ./data 是以 docker-compose.yml 同路径作为参考的
 
 这样就方便容器和实际的数据空间的通信
-
 
 
 **这个容器的位置，就是运行docker-compose.yaml 的文件位置**，如果你想要把a文件 挂载到 此容器中，就需要写好
