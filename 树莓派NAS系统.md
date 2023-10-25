@@ -191,5 +191,15 @@ services:
 
 ```
 
+#### 进入容器内部
+    sudo docker exec -it jupyter /bin/bash 
+jupyter 是容器的名字
+it 是代表进入容器内部
+/bin/bash 代表的是 用什么终端进去
+
+一般还是需要去看源码，才知道他怎么解读才是最合适的
+
+
+
 
 
