@@ -197,9 +197,71 @@ jupyter 是容器的名字
 it 是代表进入容器内部
 /bin/bash 代表的是 用什么终端进去
 
+
 一般还是需要去看源码，才知道他怎么解读才是最合适的
 
+执行这个命令的效果是:
 
+检查当前是否有名为jupyter的容器正在运行
+
+如果有,使用-it参数以交互模式进入该容器内部
+
+分配一个伪终端并打开标准输入,给我们一个类似登录服务器的Shell交互环境
+
+在容器内直接使用bash命令行进行操作,和本地一样
+
+这种方式可以很方便地进入容器内部操作,比如查看日志、安装软件等
+
+
+
+### 容器打包和重新引用
+如果你在容器内部修改了部分设置，而且你无法通过直接引入config的方式 直接挂载容器设置进行直接配置。
+那么就需要把这个镜像修改后，进行二次打包，打包后，docker-compose文件直接引用这个镜像。
+
+下面以我使用 jupter docker 具体操作步骤演示。
+我一开始 是直接使用这个配置文件
+
+```shell
+version: '2.1'
+services:
+  jellyfin:
+    image: jupyter/scipy-notebook:latest
+    restart: "unless-stopped"
+    container_name: jupyter
+    ports:
+      - 8888:8888
+    environment:
+      - "JUPYTER_ENABLE_LAB=yes"
+      - "RESTARTABLE=yes"
+    volumes:
+      - ./files:/home/jovyan/work
+
+
+```
+
+我发现这个容器 界面是英文，且没有我想要的requests包。
+如果我想一直使用这个容器，不关机，直接进入容器内部，直接安装新的包也行，但是保不齐，容器被迫停止，容器重启，原来的这些配置就都没了。
+
+所以考虑直接通过镜像打包的形式，后面直接docker-compose 直接拉取这个打包后修改的新镜像，这样就避免后面复杂的操作。
+
+```shell
+sudo docker exec -it jupyter /bin/bash 
+# 安装各种包，这个就像终端一样配置和运行即可，这个终端的进入密码 已经被我自己初始化为admin
+# 安装完成后 退出终端 exit
+sudo docker commit b2b8db4f43b1 jupter_chinese
+# b2b8db4f43b1 为原来容器的名称<docker ps 查询>  新容器为jupter_chinese
+# 这个操作会直接会生成一个新的镜像，把你原来的设置都给打包好了
+# 在docker-compose.yml 文件中 修改这个image 为 jupter_chinese 即可
+```
+重新拉取这个docker 即可完成运行
+
+如果已经修改了docker-compose.yml文件，并且希望更新其中的某个容器，可以直接使用docker-compose up -d命令。该命令会更新docker-compose.yml中修改过的服务，并根据修改的设置进行重新配置
+
+如果在docker-compose up -d命令中不指定service-name，则会默认寻找当前目录下的docker-compose.yml文件，并启动该文件中定义的所有服务。
+
+如果在命令中指定了service-name，例如docker-compose up -d myservice，则只会启动指定的服务，并不会重新拉取其他镜像。这将忽略docker-compose.yml文件中定义的其他服务。
+
+因此，如果你只想重新拉取某个特定的镜像或运行特定的服务，请务必确保指定正确的service-name。如果要重新拉取所有服务，应该使用docker-compose pull命令。
 
 
 
