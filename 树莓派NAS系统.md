@@ -264,14 +264,53 @@ sudo docker commit b2b8db4f43b1 jupter_chinese
 因此，如果你只想重新拉取某个特定的镜像或运行特定的服务，请务必确保指定正确的service-name。如果要重新拉取所有服务，应该使用docker-compose pull命令。
 
 
-# 在树莓派上搭建 RSS软件，自动抓取数据
+# 搭建RSShub + freshrss
+背景：
+个人不咋使用微博，信息严重缺乏，缺少互联网冲浪经验，因此订阅一批 RSS服务，成为互联网浪潮中的小小孤儿，默默冲浪。
 
-在树莓派上长期运行PostgreSQL可能会导致SD卡磨损加快。为了减轻这种情况，可以采取以下措施：
+我是使用docker-compose 进行配置登陆的
+freshrss 需要用数据库作为存储方案；我当前是直接使用我的阿里云Mysql服务器，进行远程链接。因此不需要建立数据库。
 
-1. 使用高质量的SD卡：选择高性能和高耐久性的SD卡，例如Class 10或UHS类别的SD卡。建议使用专为连续写入设计的SD卡。
+具体命令如下：
 
-2. 配置日志和WAL：调整PostgreSQL的日志和WAL设置，减少写入操作对SD卡的压力。可以使用适当的参数优化和日志轮换策略，以减少数据写入。
+```shell
+version: "2.1"
+services:
+  freshrss:
+    image: lscr.io/linuxserver/freshrss:latest # 由于最原始的版本freshrss 不支持 arm64位，因此采用这个版本拉取数据
+    container_name: freshrss
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ="Asia/Shanghai"
+      - http_proxy=http://192.168.123.166:7890 # 设置代理（我是使用这个7890接口 代理的docker clash 这样抓取外网的数据时候，就不会出现抓取不到的情况）
+      - https_proxy=https://192.168.123.166:7890
+    volumes:
+      - ./data:/config # 建立映射，防止重启后，配置丢失
+    ports:
+      - 6888:80 # 把宿主机的6888映射到 容器内部端口中
+    restart: unless-stopped
 
-3. 使用外部存储设备：考虑将PostgreSQL的日志和WAL存储在外部存储设备，如USB硬盘或SSD。这可以减少对SD卡的写入操作，延长其寿命。
+```
 
-综合考虑，根据具体情况，你可以选择一个合适的SD卡容量。一般来说，对于相对较小的数据库和轻度负载，16GB或32GB的SD卡已经足够。如果你预计数据库将变得较大或承载更重的负载，可以考虑更大容量的存储介质，或者使用外部存储设备来存储PostgreSQL的日志和WAL文件。
+拉取后，直接访问网址，即可进入服务器内部，注意：freshrss 只是一个rss集中管理中心，他需要输入已经有rss服务的网址，才可以进行查看
+
+我在网上看到，还是freshrss 是用起来相对不错的， 我也没对比ttrss 暂时只使用他。
+
+如果需要APP登陆，需要在认证 开启APP登陆接口
+
+然后在用户处，给API密码设置一个密码
+
+最后在APP端口，输入这个端口，账号和密码，即可完成登陆。
+
+rsshub 是一个 抓取网站RSS的平台，他包含了很多路由（相当于规则，通过这个规则，就可以得到这个网站的RSS：他应该是基于 抓取规则，建立的一个小爬虫）
+
+这里，我采用自部署的形式，进行抓取数据。
+
+（原理应该是：freshrss 会访问路由地址，会触发 rsshub 抓取方法，直接运行，获得数据）
+
+注意 树莓派直接使用 docker  也需要注意 容器的限制，他一般会备注，如果容器限制，如果是arm 就需要看arm的包，一般会做描述
+
+
+
+
