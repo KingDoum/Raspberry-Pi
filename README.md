@@ -647,3 +647,50 @@ cd
 
 
 
+## 树莓派使用zram 教程
+zram 是 Linux 内核中的一个内核模块，它可以将内存中的数据压缩后，写入到一个文件中，从而减少内存的使用。
+
+zram 主要有两个作用：
+
+1. 减少内存占用
+2. 加快内存写入速度
+
+他和swap相比，zram 最大的优势在于，它可以将内存中的数据压缩后，写入到一个文件中，从而减少内存的使用。
+
+不需要写入到硬盘中，避免了频繁IO操作， 导致内存卡损耗。
+
+在树莓派中安装zram的办法，具体步骤如下：
+
+```shell
+# remove the old dphys version
+$ sudo /etc/init.d/dphys-swapfile stop
+$ sudo apt-get remove --purge dphys-swapfile
+# release 2 GB of disk space used by the old dphys version
+$ sudo rm /var/swap
+# install zram
+$ sudo wget -O /usr/bin/zram.sh https://raw.githubusercontent.com/novaspirit/rpi_zram/master/zram.sh
+# set autoload
+$ sudo nano /etc/rc.local
+# add the next line before exit 0
+/usr/bin/zram.sh &
+# save with <Ctrl+X>, <Y> and <Enter>
+```
+
+对zram 进行调整：
+
+```shell
+$ sudo chmod +x /usr/bin/zram.sh
+$ sudo nano /usr/bin/zram.sh
+# alter the limit with * 2
+mem=$(( ($totalmem / $cores)* 1024 * 2))
+# or in latest zram.sh versions
+mem=$(( $totalmem * 512 ))
+# save with <Ctrl+X>, <Y> and <Enter>
+$ sudo reboot
+```
+
+详细步骤参考此链接：
+
+[树莓派使用zram 教程](https://zhuanlan.zhihu.com/p/618514413)
+
+
