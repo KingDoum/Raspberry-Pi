@@ -313,47 +313,8 @@ rsshub 是一个 抓取网站RSS的平台，他包含了很多路由（相当于
 ## clound flare 域名动态解析
 
 clound flare 是一个免费的域名解析服务，他可以实现域名的动态解析。
+结合ddns-go 或者是 lucky进行动态解析，可以做到域名解析的动态更新。
 
-具体参考 通过bash写脚本实现动态解析，具体链接参考：
-[利用clound flare api 上传](https://www.iokiok.tk/2019/09/16/%e4%bd%bf%e7%94%a8cloudflare%e7%9a%84api%e6%9c%8d%e5%8a%a1%e6%9b%b4%e6%96%b0%e5%8a%a8%e6%80%81ip%e5%9c%b0%e5%9d%80/)
-
-有一点要注意的是，他是在国外的地址，而我的小服务器在国内，curl的地址需要改一下，改成国内的IP地址
-
-这样他得到的地址是 国内的IP地址。
-
-我的bash 文档如下
-
-```shell
-
-#!/bin/sh
-# 將{ }替換為自己的資料
-# GET Recore ID
-#curl -x get "https://api.cloudflare.com/client/v4/zones/{YOUR_ZONE_ID}/dns_records" \
-#-h "x-auth-email:{YOUR_EMAIL@gmail.com}" \
-#-h "x-auth-key:{YOUR_GLOBAL_API_KEY}" \
-#-h "content-type: application/json"
-
-NEW_IP=`curl -s http://members.3322.org/dyndns/getip` # 我改成了国内的IP地址查询，其他的，都按照他的要求填写
-CURRENT_IP=`cat /tmp/current_ip.txt`
-
-if [ "$NEW_IP" = "$CURRENT_IP" ]
-then
-        true # 此处也更改了，由于他5个小时获取一次地址，如果没更改会echo 输出这个通知，每天发mail 就很烦，改成true 就不会输出mail
-else
-curl -X PUT "url" \
-     -H "X-Auth-Email: email" \
-     -H "X-Auth-Key: key" \
-     -H "Content-Type: application/json" \
-     --data '{"type":"A","name":"域名","content":"'$NEW_IP'","ttl":120,"proxied":false}' > /dev/null
-echo $NEW_IP > /tmp/current_ip.txt
-fi
-```
-
-然后在crontab中设置定时任务，每隔5小时执行一次，就OK。
-可能Python没成功的原因也是在于 他不是只传个别的参数，是要传入很多参数才可行。
-
-
-# 树莓派使用docker 安装fastgtp
 
 ```shell
 
